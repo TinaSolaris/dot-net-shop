@@ -1,0 +1,106 @@
+﻿@{
+    ViewData["Title"] = "Shopping Cart";
+}
+@model dotNetShop.ViewModels.CartViewModel
+
+<h2>Shopping Cart</h2>
+
+@if (Model.CartItems.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.CartItems.First().Article.Id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CartItems.First().Article.Name)
+                </th>
+                <th class="cell-right">
+                    @Html.DisplayNameFor(model => model.CartItems.First().Article.Price)
+                </th>
+                <th class="cell-center">
+                    @Html.DisplayNameFor(model => model.CartItems.First().Article.ImagePath)
+                </th>
+                <th class="cell-right">
+                    @Html.DisplayNameFor(model => model.CartItems.First().Quantity)
+                </th>
+                <th class="cell-right">
+                    @Html.DisplayNameFor(model => model.CartItems.First().TotalPrice)
+                </th>
+                <th colspan="2">
+                    Actions
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.CartItems)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Article.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Article.Name)
+                </td>
+                <td class="cell-right">
+                    @Html.DisplayFor(modelItem => item.Article.Price)
+                </td>
+                <td class="cell-center">
+                    <img src="@item.Article.ResolvedThumbnailFilePath" alt="@item.Article.Name" class="thumbnail" />
+                </td>
+                <td class="cell-right">
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td class="cell-right">
+                    @Html.DisplayFor(modelItem => item.TotalPrice)
+                </td>
+                <td>
+                    <form asp-controller="Cart" asp-action="UpdateCart" method="get">
+                        <input type="hidden" name="articleId" value="@item.Article.Id" />
+                        <input type="number" name="quantity" class="input-qty" value="@item.Quantity" />
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </form>
+                </td>
+                <td class="cell-right">
+                    <form asp-controller="Cart" asp-action="RemoveFromCart" method="get">
+                        <input type="hidden" name="articleId" value="@item.Article.Id" />
+                        <button type="submit" class="btn btn-danger">Remove</button>
+                    </form>
+                </td>
+            </tr>
+        }
+            <tr>
+                <td colspan="5" class="total-caption">@Html.DisplayNameFor(model => model.TotalCartPrice)</td>
+                <td class="cell-right total-value">@Html.DisplayFor(model => model.TotalCartPrice)</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+
+        </tbody>
+    </table>
+
+    @if (User.Identity.IsAuthenticated)
+    {
+        <form asp-controller="Order" asp-action="Index" method="get">
+            <button type="submit" class="btn btn-primary">Proceed to Checkout</button>
+        </form>
+    }
+    else
+    {
+        <p class="no-items">
+            Please <a asp-area="Identity" asp-page="/Account/Login">login</a> 
+            or <a asp-area="Identity" asp-page="/Account/Register">register</a>
+            to proceed to checkout.
+        </p>
+    }
+
+    <p>
+        <a asp-action="Index">Back to Shop</a>
+    </p>
+}
+else
+{
+    <p class="no-items">Your shopping cart is empty.</p>
+}

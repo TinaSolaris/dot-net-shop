@@ -1,0 +1,66 @@
+﻿@using dotNetShop.Data;
+@using Microsoft.AspNetCore.Identity;
+
+@model IEnumerable<dotNetShop.Models.Article>
+@inject SignInManager<IdentityUser> SignInManager
+
+<h2>Articles by Category: @ViewBag.CategoryName</h2>
+
+@if (Model != null && Model.Any())
+{
+    @Html.HiddenFor(model => model.First().CategoryId)
+
+    <table id="articles" class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th class="cell-right">
+                    @Html.DisplayNameFor(model => model.Price)
+                </th>
+                <th class="cell-center">
+                    @Html.DisplayNameFor(model => model.ImagePath)
+                </th>
+                @if (!SignInManager.IsSignedIn(User) || !User.IsInRole(nameof(Role.Admin)))
+                {
+                    <th class="cell-right">
+                        Action
+                    </th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                await Html.RenderPartialAsync("_ArticleListPartial", Model);
+            }
+        </tbody>
+    </table>
+    <div class="row">  
+        <div id="loading" class="loading">  
+            Loading...
+        </div>  
+    </div>
+    @section scripts {  
+        <script src="~/js/lazyLoading.js"></script>  
+        <script type="text/javascript">  
+            $(function () {
+                $("div#loading").hide();  
+            });
+            var ajaxCallUrl = 'ListPartial';
+            var count = @ViewBag.Count;
+            $(window).scroll(scrollHandler);  
+        </script>  
+    }
+}
+else
+{
+    <p class="no-items">No articles in this category.</p>
+}
+
+<p class="nav-bottom">
+    <a asp-action="Index">Back to Shop</a>
+</p>

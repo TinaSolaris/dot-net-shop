@@ -1,0 +1,35 @@
+﻿@{
+    ViewData["Title"] = "Delete";
+}
+@model dotNetShop.Models.Category
+
+<h2>Delete Category</h2>
+
+<h3>Are you sure you want to delete this category?</h3>
+
+<dl class="row">
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Id)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Id)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Name)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Name)
+    </dd>
+</dl>
+
+<form asp-action="Delete">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-buttons">
+        <input type="submit" value="Delete" class="btn btn-danger" />
+    </div>
+</form>
+
+<p class="nav-bottom">
+    <a asp-action="Index">Back to Categories</a>
+</p>

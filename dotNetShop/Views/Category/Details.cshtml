@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Details";
+}
+@model dotNetShop.Models.Category
+
+<h2>Category Details</h2>
+
+<dl class="row">
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Id)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Id)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Name)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Name)
+    </dd>
+</dl>
+
+<p class="nav-bottom">
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Delete", "Delete", new { id = Model.Id }) |
+    <a asp-action="Index">Back to Categories</a>
+</p>

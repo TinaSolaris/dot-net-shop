@@ -1,0 +1,73 @@
+﻿@using dotNetShop.Data;
+@using Microsoft.AspNetCore.Identity;
+@{
+    ViewData["Title"] = "Articles by Category";
+}
+@model IEnumerable<dotNetShop.Models.Article>
+@inject SignInManager<IdentityUser> SignInManager
+
+<h2>Articles by Category: @ViewBag.CategoryName</h2>
+
+@if (Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th class="cell-right">
+                    @Html.DisplayNameFor(model => model.Price)
+                </th>
+                <th class="cell-center">
+                    @Html.DisplayNameFor(model => model.ImagePath)
+                </th>
+                @if (!SignInManager.IsSignedIn(User) || !User.IsInRole(nameof(Role.Admin)))
+                {
+                    <th class="cell-right">
+                        Action
+                    </th>
+                }
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td class="cell-right">
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td class="cell-center">
+                        <img src="@item.ResolvedThumbnailFilePath" alt="@item.Name" class="thumbnail" />
+                    </td>
+                    @if (!SignInManager.IsSignedIn(User) || !User.IsInRole(nameof(Role.Admin)))
+                    {
+                        <td class="cell-right">
+                            <form asp-controller="Cart" asp-action="AddToCart" method="get">
+                                <input type="hidden" name="articleId" value="@item.Id" />
+                                <button type="submit" class="btn btn-primary">Add to Cart</button>
+                            </form>
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p class="no-items">No articles in this category.</p>
+}
+
+<p class="nav-bottom">
+    <a asp-action="Index">Back to Shop</a>
+</p>

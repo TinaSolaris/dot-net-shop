@@ -1,0 +1,123 @@
+﻿@{
+    ViewData["Title"] = "Confirm Order";
+}
+@model dotNetShop.ViewModels.OrderViewModel
+
+<h2>Confirm Order</h2>
+
+@if (Model.Cart.CartItems.Any())
+{
+    <h3>Order Items</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Cart.CartItems.First().Article.Id)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Cart.CartItems.First().Article.Name)
+                </th>
+                <th class="cell-right">
+                    @Html.DisplayNameFor(model => model.Cart.CartItems.First().Article.Price)
+                </th>
+                <th class="cell-center">
+                    @Html.DisplayNameFor(model => model.Cart.CartItems.First().Article.ImagePath)
+                </th>
+                <th class="cell-right">
+                    @Html.DisplayNameFor(model => model.Cart.CartItems.First().Quantity)
+                </th>
+                <th class="cell-right">
+                    @Html.DisplayNameFor(model => model.Cart.CartItems.First().TotalPrice)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model.Cart.CartItems)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Article.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Article.Name)
+                </td>
+                <td class="cell-right">
+                    @Html.DisplayFor(modelItem => item.Article.Price)
+                </td>
+                <td class="cell-center">
+                    <img src="@item.Article.ResolvedThumbnailFilePath" alt="@item.Article.Name" class="thumbnail" />
+                </td>
+                <td class="cell-right">
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td class="cell-right">
+                    @Html.DisplayFor(modelItem => item.TotalPrice)
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+    <div>
+        <p>Total Price: @Model.Cart.TotalCartPrice</p>
+    </div>
+    
+    <form asp-controller="Order" asp-action="Confirmation" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <h3>User Info</h3>
+        <div>
+            <label asp-for="FirstName"></label>
+            <input asp-for="FirstName" class="form-control" />
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+        </div>
+        <div>
+            <label asp-for="LastName"></label>
+            <input asp-for="LastName" class="form-control" />
+            <span asp-validation-for="LastName" class="text-danger"></span>
+        </div>
+
+        <h3>Delivery Address</h3>
+        <div>
+            <label asp-for="Address.AddressLine1"></label>
+            <input asp-for="Address.AddressLine1" class="form-control" />
+            <span asp-validation-for="Address.AddressLine1" class="text-danger"></span>
+        </div>
+        <div>
+            <label asp-for="Address.AddressLine2"></label>
+            <input asp-for="Address.AddressLine2" class="form-control" />
+        </div>
+        <div>
+            <label asp-for="Address.City"></label>
+            <input asp-for="Address.City" class="form-control" />
+            <span asp-validation-for="Address.City" class="text-danger"></span>
+        </div>
+        <div>
+            <label asp-for="Address.Country"></label>
+            <input asp-for="Address.Country" class="form-control" />
+            <span asp-validation-for="Address.Country" class="text-danger"></span>
+        </div>
+        <div>
+            <label asp-for="Address.PostalCode"></label>
+            <input asp-for="Address.PostalCode" class="form-control" />
+            <span asp-validation-for="Address.PostalCode" class="text-danger"></span>
+        </div>
+
+        <h3>Payment Method</h3>
+        <div>
+            <label asp-for="PaymentMethod"></label>
+            <select asp-for="PaymentMethod" asp-items="Model.PaymentMethods" class="form-control"></select>
+            <span asp-validation-for="PaymentMethod" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Confirm Order</button>
+    </form>
+}
+else
+{
+    <p class="no-items">Your shopping cart is empty.</p>
+}
+
+<p>
+    <a asp-controller="Shop" asp-action="Index">Back to Shop</a>
+</p>

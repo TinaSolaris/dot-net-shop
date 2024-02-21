@@ -1,0 +1,45 @@
+﻿@{
+    ViewData["Title"] = "Details";
+}
+@model dotNetShop.Models.Article
+
+<h2>Article Details</h2>
+
+<dl class="row">
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Id)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Id)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Name)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Name)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Price)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Price)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Category.Name)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Category.Name)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.ImagePath)
+    </dt>
+    <dd class="col-sm-10">            
+        <img src="@Model.ResolvedImageFilePath" alt="@Model.Name" class="article-image" />
+    </dd>
+</dl>
+
+<p class="nav-bottom">
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Delete", "Delete", new { id = Model.Id }) |
+    <a asp-action="Index">Back to Articles</a>
+</p>

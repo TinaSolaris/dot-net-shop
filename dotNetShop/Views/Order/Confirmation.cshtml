@@ -1,0 +1,32 @@
+﻿@{
+    ViewData["Title"] = "Order Confirmation";
+}
+@model dotNetShop.Models.Order
+
+<h2>Order Confirmation</h2>
+
+<h3>User Info</h3>
+<div>
+    <p>Username: @Model.User.User.UserName</p>
+    <p>First Name: @Model.User.FirstName</p>
+    <p>Last Name: @Model.User.LastName</p>
+    <p>Email: @Model.User.User.Email</p>
+</div>
+
+<h3>Delivery Address</h3>
+<div>
+    <p>Address Line 1: @Model.Address.AddressLine1</p>
+    <p>Address Line 2: @Model.Address.AddressLine2</p>
+    <p>City: @Model.Address.City</p>
+    <p>Country: @Model.Address.Country</p>
+    <p>Postal Code: @Model.Address.PostalCode</p>
+</div>
+
+<h3>Payment Method</h3>
+<div>
+    <p>Payment Method: @Model.PaymentMethod</p>
+</div>
+
+<p>
+    <a asp-controller="Shop" asp-action="Index">Back to Shop</a>
+</p>
